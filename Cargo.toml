@@ -1,0 +1,38 @@
+[package]
+name = "messergebnisse"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+axum = { version = "0.7.5" }
+axum-server = { version = "0.6.0", features = [
+    "tls-rustls",
+] }
+chrono = "0.4.26"
+deadpool-tiberius = { version = "0.1.2", features = [
+    "sql-browser",
+] }
+http = "1.0.0"
+serde = { version = "1.0", features = [
+    "derive",
+] }
+serde_json = "1.0.99"
+tiberius = { version = "0.12.2", features = [
+  "chrono",
+  "sql-browser-tokio",
+] }
+tokio = { version = "1.29.1", features = [
+    "full",
+] }
+tower-http = { version = "0.5.0", features = [
+    "cors",
+] }
+tokio-util = "0.7.8"
+
+# windows-service = "0.6.0"
+regex = "1.9.6"
+
+[dev-dependencies]
+axum-test = "14.0.0"
