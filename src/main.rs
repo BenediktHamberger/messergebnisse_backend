@@ -49,6 +49,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .pre_recycle_sync(|_client, _metrics| Ok(()))
         .create_pool()?;
 
+    let mut _conn = pool
+        .get()
+        .await?;
+
     let state = Arc::new(Mutex::new(ServerState {
         pool: Arc::new(Mutex::new(pool)),
     }));

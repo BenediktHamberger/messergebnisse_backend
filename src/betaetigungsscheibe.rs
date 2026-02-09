@@ -22,19 +22,19 @@ pub async fn betaetigungsscheibe(
     let filters: Vec<Filter> = payload
         .filters
         .into_iter()
-        .map(|f| Filter::from(f))
+        .map(Filter::from)
         .collect::<Vec<Filter>>();
 
     let mut vec_filters = vec![];
 
-    build_filters(filters, &mut vec_filters);
+    let _ = build_filters(filters, &mut vec_filters);
 
     let str_filters = match vec_filters.is_empty() {
         true => "".to_owned(),
         false => "WHERE ".to_owned() + &vec_filters.join(" AND "),
     };
 
-    let query = format!("SELECT TOP 500 * FROM pp_messwerteBTS {}", str_filters);
+    let query = format!("SELECT TOP 500 * FROM [workvision_knott].[dbo].[pp_messwerteBTS] {}", str_filters);
 
     let mut res: Vec<Vec<Value>> = vec![];
 

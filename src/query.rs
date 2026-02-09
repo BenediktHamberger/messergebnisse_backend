@@ -88,7 +88,7 @@ pub async fn actual_query<'a>(
     let mut streams = select
         .query(conn)
         .await
-        .map_err(|_| (StatusCode::BAD_REQUEST, query))?;
+        .map_err(|x| (StatusCode::BAD_REQUEST, x.to_string()))?;
 
     #[cfg(not(debug_assertions))]
     let mut streams = select
@@ -178,7 +178,18 @@ pub fn match_operator(f: Filter, sql_type: SqlType, vec_filters: &mut Vec<String
     match sql_type {
         SqlType::SqlString => match f {
             Filter::EQ(id, value) => {
-                vec_filters.push(format!("{} = '{}'", id, value));
+                match id.as_str() {
+                    "BremseNrText" => {
+                        vec_filters.push(format!("SerienNrTemporaer IN (
+    SELECT SerienNrTemporaer
+    FROM pruefergebnisse.dbo.pp_bremse
+    WHERE BremseNrText = '{}'
+)", value));
+                    }
+                    _ => {
+                        vec_filters.push(format!("{} = '{}'", id, value));
+                    }
+                }
             }
             Filter::Empty(id) => {
                 vec_filters.push(format!("ISNULL({}, '') = ''", id));

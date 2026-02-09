@@ -22,20 +22,21 @@ pub async fn messergebnisse(
     let filters: Vec<Filter> = payload
         .filters
         .into_iter()
-        .map(|f| Filter::from(f))
+        .map(Filter::from)
         .collect::<Vec<Filter>>();
+
+   
 
     let mut vec_filters = vec![];
 
-    build_filters(filters, &mut vec_filters);
+    _ = build_filters(filters, &mut vec_filters);
 
     let str_filters = match vec_filters.is_empty() {
         true => "".to_owned(),
         false => "WHERE ".to_owned() + &vec_filters.join(" AND "),
     };
 
-    let query = format!("SELECT TOP 500 * FROM pp_messergebnisse {}", str_filters);
-
+    let query = format!("SELECT TOP 500 * FROM [pruefergebnisse].[dbo].[pp_messergebnisse] {} ORDER BY SerienNrTemporaer;", str_filters);
     let mut res: Vec<Vec<Value>> = vec![];
 
     crate::query::actual_query(query, &mut conn, &mut res).await?;
