@@ -13,6 +13,7 @@ use std::{net::SocketAddr, sync::Arc};
 use tokio::sync::Mutex;
 
 mod betaetigungsscheibe;
+mod betaetigungsscheibe_9622;
 mod messergebnisse;
 mod query;
 mod zugkugelkupplung;
@@ -80,6 +81,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .route(
             "/query_betaetigungsscheibe",
             post(betaetigungsscheibe::betaetigungsscheibe),
+        )
+        .route(
+            "/query_betaetigungsscheibe_9622",
+            post(betaetigungsscheibe_9622::betaetigungsscheibe_9622),
         )
         .layer(cors)
         .with_state(state);
